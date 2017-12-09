@@ -24,7 +24,7 @@ Features
 ----------------
 Installation
 ----------------
-The software runs in a container, so just run `docker pull mdsol/logspout`.
+The software runs in a container, so just run `docker pull topmonks/logspout-cloudwatch`.
 
 
 ----------------
@@ -44,7 +44,7 @@ First, make sure you're not running any containers that might be logging sensiti
 
         docker run -h $(hostname) -v ~/.aws/credentials:/root/.aws/credentials \
           --volume=/var/run/docker.sock:/tmp/docker.sock --name=logspout \
-          --rm -it mdsol/logspout 'cloudwatch://us-east-1?DEBUG=1&NOEC2'
+          --rm -it topmonks/logspout-cloudwatch 'cloudwatch://us-east-1?DEBUG=1&NOEC2'
 
 
     Notice the `-h $(hostname -f)` parameter; you probably want the logging container name to share hostnames with the Docker host, because the default behavior is to group logs by hostname. The `DEBUG=1` route option allows you to make sure each batch of logs gets submitted to AWS without errors. The `NOEC2` option tells the plugin not to look for the EC2 Metadata service.
@@ -74,7 +74,7 @@ Production Usage / Inside EC2
 
         docker run -h $(hostname) -dt --name=logspout \
           --volume=/var/run/docker.sock:/tmp/docker.sock \
-          mdsol/logspout 'cloudwatch://auto'
+          topmonks/logspout-cloudwatch 'cloudwatch://auto'
 
     The `-d` and `-t` flags are optional, depending on whether you want to background the process, or run it under some supervisory daemon. But if you *do* omit the `-t` flag, you can use the environment variable `LOGSPOUT=ignore` to prevent Logspout from attempting to post its own output to AWS.
 
